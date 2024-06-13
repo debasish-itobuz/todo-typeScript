@@ -9,5 +9,4 @@ router.get('/get-by-id', todoController_1.getTodoById);
 router.get('/get-by-filter', todoController_1.filterTodo);
 router.put('/update', todoController_1.updateTodo);
 router.delete('/delete', todoController_1.deleteTodo);
-router.get('/get-by-page', todoController_1.paginationTodo);
 exports.default = router;
