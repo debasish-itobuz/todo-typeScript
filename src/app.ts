@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction, Application, ErrorRequestHandler } from 'express'
-import { Server } from 'http'
-import createHttpError from 'http-errors'
+import bodyParser from 'body-parser';
 import todoRoutes from './routes/todoRoute'
 import connectToDb from './config/dbConnection';
 import { config } from 'dotenv'
@@ -9,18 +8,16 @@ config()
 connectToDb()
 
 const app: Application = express()
-const PORT: Number = Number(process.env.PORT) || 4003
+const PORT: Number = Number(process.env.PORT) || 4005
 
 // app.get('/', (req: Request, res: Response, next: NextFunction) => {
 //     res.send("Hello from ts app !!!!")
 // })
 
+app.use(bodyParser.json());
 app.use(express.json())
 app.use('/todo', todoRoutes)
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-    next(new createHttpError.NotFound())
-})
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     res.status(err.status || 500)
@@ -32,6 +29,6 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
 app.use(errorHandler)
 
-const server: Server = app.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server is running at port ${PORT}`)
 })

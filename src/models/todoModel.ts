@@ -5,10 +5,10 @@ const todoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    status:{
+    status: {
         type: String,
         enum: ["ToDo", "InProgress", "Completed"],
-        default:"ToDo"
+        required: true
     }
 }, { timestamps: true })
 

@@ -14,16 +14,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.filterTodo = exports.deleteTodo = exports.updateTodo = exports.getTodoById = exports.getTodo = exports.postTodo = void 0;
 const todoModel_1 = __importDefault(require("../models/todoModel"));
+const todoValidators_1 = require("../validators/todoValidators");
 //http://localhost:4002/todo/post
 const postTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield todoModel_1.default.create(req.body);
-        // console.log(data)
+        console.log(req.body);
+        const parsedData = todoValidators_1.todoValidation.safeParse(req.body);
+        if (!parsedData.success) {
+            const messages = parsedData.error.issues.map((err) => err.message);
+            return res.status(400).send({ errors: messages, message: "error" });
+        }
+        const data = yield todoModel_1.default.create(parsedData.data);
+        console.log(data);
         return res.status(200).send({ data: data, success: "200", message: "Data added successfully" });
     }
     catch (err) {
         console.log("Error", err);
-        return res.status(400).send({ data: null, success: "400", message: "Data not added" });
+        return res.status(400).send({ data: err, success: "400", message: "Data not added" });
     }
 });
 exports.postTodo = postTodo;

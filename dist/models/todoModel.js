@@ -12,7 +12,7 @@ const todoSchema = new mongoose_1.default.Schema({
     status: {
         type: String,
         enum: ["ToDo", "InProgress", "Completed"],
-        default: "ToDo"
+        required: true
     }
 }, { timestamps: true });
 exports.default = mongoose_1.default.model('todos', todoSchema);

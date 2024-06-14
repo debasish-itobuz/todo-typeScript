@@ -1,16 +1,24 @@
 import todoModel from "../models/todoModel";
 import { Request, Response } from 'express'
+import { todoValidation } from "../validators/todoValidators";
 
 //http://localhost:4002/todo/post
 const postTodo = async (req: Request, res: Response) => {
     try {
-        const data = await todoModel.create(req.body)
-        // console.log(data)
+        console.log(req.body)
+        const parsedData = todoValidation.safeParse(req.body);
+        if(!parsedData.success) {
+            const messages = parsedData.error.issues.map((err)=>err.message)
+            return res.status(400).send({errors: messages, message: "error" });
+        }
+
+        const data = await todoModel.create(parsedData.data)
+        console.log(data)
         return res.status(200).send({ data: data, success: "200", message: "Data added successfully" })
 
     } catch (err) {
         console.log("Error", err)
-        return res.status(400).send({ data: null, success: "400", message: "Data not added" })
+        return res.status(400).send({ data: err, success: "400", message: "Data not added" })
     }
 }
 
