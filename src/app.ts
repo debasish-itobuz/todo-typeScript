@@ -10,10 +10,6 @@ connectToDb()
 const app: Application = express()
 const PORT: Number = Number(process.env.PORT) || 4005
 
-// app.get('/', (req: Request, res: Response, next: NextFunction) => {
-//     res.send("Hello from ts app !!!!")
-// })
-
 app.use(bodyParser.json());
 app.use(express.json())
 app.use('/todo', todoRoutes)

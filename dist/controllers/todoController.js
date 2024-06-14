@@ -18,14 +18,14 @@ const todoValidators_1 = require("../validators/todoValidators");
 //http://localhost:4002/todo/post
 const postTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.body);
+        // console.log(req.body)
         const parsedData = todoValidators_1.todoValidation.safeParse(req.body);
         if (!parsedData.success) {
             const messages = parsedData.error.issues.map((err) => err.message);
             return res.status(400).send({ errors: messages, message: "error" });
         }
         const data = yield todoModel_1.default.create(parsedData.data);
-        console.log(data);
+        // console.log(data)
         return res.status(200).send({ data: data, success: "200", message: "Data added successfully" });
     }
     catch (err) {
@@ -60,14 +60,28 @@ const getTodoById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getTodoById = getTodoById;
 //http://localhost:4002/todo/update/?id=666ad087efdfdeb7267f590c
 const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // try {
+    //     // console.log(req.query, req.body)
+    //     const data = await todoModel.findByIdAndUpdate(req.query.id, req.body)
+    //     return res.status(200).send({ data: data, success: "200", message: "Data updated successfully" })
+    // } catch (err) {
+    //     console.log("Error", err)
+    //     return res.status(400).send({ data: null, success: "400", message: "Data not updated" })
+    // }
     try {
-        // console.log(req.query, req.body)
-        const data = yield todoModel_1.default.findByIdAndUpdate(req.query.id, req.body);
+        // console.log(req.body)
+        const parsedData = todoValidators_1.todoValidation.safeParse(req.body);
+        if (!parsedData.success) {
+            const messages = parsedData.error.issues.map((err) => err.message);
+            return res.status(400).send({ errors: messages, message: "error" });
+        }
+        const data = yield todoModel_1.default.findByIdAndUpdate(req.query.id, parsedData.data);
+        // console.log(data)
         return res.status(200).send({ data: data, success: "200", message: "Data updated successfully" });
     }
     catch (err) {
         console.log("Error", err);
-        return res.status(400).send({ data: null, success: "400", message: "Data not updated" });
+        return res.status(400).send({ data: err, success: "400", message: "Data not updated" });
     }
 });
 exports.updateTodo = updateTodo;

@@ -3,7 +3,6 @@ import { deleteTodo, filterTodo, getTodo, getTodoById, postTodo, updateTodo } fr
 
 const router = Router()
 
-
 router.post('/post', postTodo)
 router.get('/get', getTodo)
 router.get('/get-by-id', getTodoById)

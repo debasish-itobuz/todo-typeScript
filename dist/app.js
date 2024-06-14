@@ -12,9 +12,6 @@ const dotenv_1 = require("dotenv");
 (0, dbConnection_1.default)();
 const app = (0, express_1.default)();
 const PORT = Number(process.env.PORT) || 4005;
-// app.get('/', (req: Request, res: Response, next: NextFunction) => {
-//     res.send("Hello from ts app !!!!")
-// })
 app.use(body_parser_1.default.json());
 app.use(express_1.default.json());
 app.use('/todo', todoRoute_1.default);
