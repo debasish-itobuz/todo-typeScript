@@ -15,17 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.filterTodo = exports.deleteTodo = exports.updateTodo = exports.getTodoById = exports.getTodo = exports.postTodo = void 0;
 const todoModel_1 = __importDefault(require("../models/todoModel"));
 const todoValidators_1 = require("../validators/todoValidators");
-//http://localhost:4002/todo/post
 const postTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // console.log(req.body)
         const parsedData = todoValidators_1.todoValidation.safeParse(req.body);
         if (!parsedData.success) {
             const messages = parsedData.error.issues.map((err) => err.message);
             return res.status(400).send({ errors: messages, message: "error" });
         }
         const data = yield todoModel_1.default.create(parsedData.data);
-        // console.log(data)
         return res.status(200).send({ data: data, success: "200", message: "Data added successfully" });
     }
     catch (err) {
@@ -34,7 +31,6 @@ const postTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.postTodo = postTodo;
-//http://localhost:4002/todo/get
 const getTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield todoModel_1.default.find();
@@ -46,7 +42,6 @@ const getTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getTodo = getTodo;
-// http://localhost:4002/todo/get-by-id/?id=666ad087efdfdeb7267f590c
 const getTodoById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield todoModel_1.default.findById(req.query.id);
@@ -58,25 +53,14 @@ const getTodoById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getTodoById = getTodoById;
-//http://localhost:4002/todo/update/?id=666ad087efdfdeb7267f590c
 const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // try {
-    //     // console.log(req.query, req.body)
-    //     const data = await todoModel.findByIdAndUpdate(req.query.id, req.body)
-    //     return res.status(200).send({ data: data, success: "200", message: "Data updated successfully" })
-    // } catch (err) {
-    //     console.log("Error", err)
-    //     return res.status(400).send({ data: null, success: "400", message: "Data not updated" })
-    // }
     try {
-        // console.log(req.body)
         const parsedData = todoValidators_1.todoValidation.safeParse(req.body);
         if (!parsedData.success) {
             const messages = parsedData.error.issues.map((err) => err.message);
             return res.status(400).send({ errors: messages, message: "error" });
         }
         const data = yield todoModel_1.default.findByIdAndUpdate(req.query.id, parsedData.data);
-        // console.log(data)
         return res.status(200).send({ data: data, success: "200", message: "Data updated successfully" });
     }
     catch (err) {
@@ -85,7 +69,6 @@ const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateTodo = updateTodo;
-//http://localhost:4002/todo/delete/?id=666ad06fefdfdeb7267f5908
 const deleteTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield todoModel_1.default.findByIdAndDelete(req.query.id);
@@ -97,7 +80,6 @@ const deleteTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteTodo = deleteTodo;
-//http://localhost:4002/todo/get-by-filter/?status=Completed
 const filterTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { status } = req.query;

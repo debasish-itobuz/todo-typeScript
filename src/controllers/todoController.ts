@@ -2,18 +2,15 @@ import todoModel from "../models/todoModel";
 import { Request, Response } from 'express'
 import { todoValidation } from "../validators/todoValidators";
 
-//http://localhost:4002/todo/post
 const postTodo = async (req: Request, res: Response) => {
     try {
-        // console.log(req.body)
         const parsedData = todoValidation.safeParse(req.body);
-        if(!parsedData.success) {
-            const messages = parsedData.error.issues.map((err)=>err.message)
-            return res.status(400).send({errors: messages, message: "error" });
+        if (!parsedData.success) {
+            const messages = parsedData.error.issues.map((err) => err.message)
+            return res.status(400).send({ errors: messages, message: "error" });
         }
 
         const data = await todoModel.create(parsedData.data)
-        // console.log(data)
         return res.status(200).send({ data: data, success: "200", message: "Data added successfully" })
 
     } catch (err) {
@@ -22,7 +19,6 @@ const postTodo = async (req: Request, res: Response) => {
     }
 }
 
-//http://localhost:4002/todo/get
 const getTodo = async (req: Request, res: Response) => {
     try {
         const data = await todoModel.find()
@@ -33,7 +29,6 @@ const getTodo = async (req: Request, res: Response) => {
     }
 }
 
-// http://localhost:4002/todo/get-by-id/?id=666ad087efdfdeb7267f590c
 const getTodoById = async (req: Request, res: Response) => {
     try {
         const data = await todoModel.findById(req.query.id)
@@ -44,27 +39,15 @@ const getTodoById = async (req: Request, res: Response) => {
     }
 }
 
-//http://localhost:4002/todo/update/?id=666ad087efdfdeb7267f590c
 const updateTodo = async (req: Request, res: Response) => {
-    // try {
-    //     // console.log(req.query, req.body)
-    //     const data = await todoModel.findByIdAndUpdate(req.query.id, req.body)
-    //     return res.status(200).send({ data: data, success: "200", message: "Data updated successfully" })
-    // } catch (err) {
-    //     console.log("Error", err)
-    //     return res.status(400).send({ data: null, success: "400", message: "Data not updated" })
-    // }
-
     try {
-        // console.log(req.body)
         const parsedData = todoValidation.safeParse(req.body);
-        if(!parsedData.success) {
-            const messages = parsedData.error.issues.map((err)=>err.message)
-            return res.status(400).send({errors: messages, message: "error" });
+        if (!parsedData.success) {
+            const messages = parsedData.error.issues.map((err) => err.message)
+            return res.status(400).send({ errors: messages, message: "error" });
         }
 
-        const data = await todoModel.findByIdAndUpdate(req.query.id , parsedData.data)
-        // console.log(data)
+        const data = await todoModel.findByIdAndUpdate(req.query.id, parsedData.data)
         return res.status(200).send({ data: data, success: "200", message: "Data updated successfully" })
 
     } catch (err) {
@@ -73,7 +56,6 @@ const updateTodo = async (req: Request, res: Response) => {
     }
 }
 
-//http://localhost:4002/todo/delete/?id=666ad06fefdfdeb7267f5908
 const deleteTodo = async (req: Request, res: Response) => {
     try {
         const data = await todoModel.findByIdAndDelete(req.query.id)
@@ -84,7 +66,6 @@ const deleteTodo = async (req: Request, res: Response) => {
     }
 }
 
-//http://localhost:4002/todo/get-by-filter/?status=Completed
 const filterTodo = async (req: Request, res: Response) => {
     try {
         const { status } = req.query;
